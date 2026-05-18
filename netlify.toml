@@ -1,0 +1,15 @@
+# Monorepo: asıl Next.js uygulaması web/ altında.
+# publish, base’e göre çözülür: ".next" → .../repo/web/.next (web/web/.next hatası olmasın)
+[build]
+  base = "web"
+  publish = ".next"
+  command = "npx prisma migrate deploy && npm run build"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Neon pooler + Prisma migrate advisory lock uyumsuzluğu: tek thread build için Prisma önerisi
+  # https://www.prisma.io/docs/orm/reference/environment-variables-reference
+  PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
